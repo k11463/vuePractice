@@ -7,7 +7,7 @@ var md5 = require('md5');
 var _ = require('lodash');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
-var {insertTable, login} = require('./query.js');
+var {insertTable, login, chgMember, checkMember} = require('./query.js');
 
 var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
@@ -65,7 +65,29 @@ var brianHash = (password) => {
   })
 };
 
-app.post('/getData', (req, res) => {
+app.post('/chgMember', (req, res) => {
+  //console.log(req.body);
+  var data = req.body;
+  console.log(data);
+  checkMember(data.ac, data.token, data.pw1).then((result) => {
+    if (data.type == "password"){
+      brianHash(data.pw2).then((result1) => {
+        return chgMember(result, result1, data.type);
+      })
+    }
+    else{
+      return chgMember(result, data.value, data.type);
+    }
+  }).then((result2) => {
+    console.log("result2" + result2);
+    res.send(result2);
+  }).catch((err) => {
+    console.log(err);
+    res.status(404).send(err);
+  })
+})
+
+app.post('/getMember', (req, res) => {
   var data = req.body.token;
   con.query(`SELECT * FROM member WHERE token = '${data}'`, (err, result) => {
     if (err){

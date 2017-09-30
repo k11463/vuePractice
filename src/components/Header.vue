@@ -16,7 +16,7 @@
         </ul>
       </div>
       <div class="logout" v-if="this.$store.state.isLogin" @click="logout">登出</div>
-      <div class="welcome">歡迎光臨本站：{{ $store.state.user }}</div>
+      <div class="welcome">歡迎光臨本站：{{ this.$store.state.user }}</div>
     </div>
 </nav>
 </template>

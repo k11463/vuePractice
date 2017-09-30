@@ -44,6 +44,8 @@ export default {
     //   this.delMember = true;
     //   this.chgMember = false;
     // }
+  },
+  computed: {
   }
 }
 </script>
@@ -53,7 +55,9 @@ export default {
   width: 100vw;
   height: 100vh;
 }
-.left{
+.btn{
+  width: 100px;
+  height: 30px;
 }
 .leftBar{
   width: 380px;

@@ -4,8 +4,9 @@
       <div class="col-lg-3 left body"></div>
       <div class="col-lg-6 mid body">
         <center>
+          <app-chg v-if="getChgAlert" content="123" @result="chg"></app-chg>
           <h1>首頁</h1>
-          <button type="button" name="button" @click="gg">註冊</button>
+          <button type="button" name="button" @click="on">註冊</button>
         </center>
       </div>
       <div class="col-lg-3 right body"></div>
@@ -14,13 +15,32 @@
 </template>
 
 <script>
+import ChgMemberAlert from './ChgMemberDataAlert.vue';
 export default {
   created(){
-    return this.$store.dispatch('hasToken');
+    this.$store.commit('saveMemberData');
+    this.$store.dispatch('hasToken');
+  },
+  components: {
+    appChg: ChgMemberAlert
+  },
+  computed: {
+    getChgAlert(){
+      return this.$store.state.chgMemberDataAlert;
+    }
   },
   methods: {
-    gg(){
-      console.log(window.localStorage.length);
+    on(){
+      this.$store.commit('setMemberDataAlert', true);
+    },
+    chg(result){
+      if (result.value){
+        console.log("1");
+        console.log(result.data);
+      }
+      else{
+        console.log("2");
+      }
     }
   }
 }

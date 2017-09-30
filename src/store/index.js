@@ -11,12 +11,32 @@ export const store = new Vuex.Store({
     memberID: "",
     phone: "",
     email: "",
-    account: ""
+    account: "",
+    chgMemberDataAlert: false,
+    isAlertTxt: true,
+    isAlertTxtPass: false,
   },
   mutations: { // $store.commit
     // saveUser(state, payload){
     //   state.user = payload;
     // },
+    setMemberDataAlert(state, payload){
+      state.chgMemberDataAlert = payload;
+    },
+    setAlertTxt(state, payload){
+      if (payload == 1){
+        state.isAlertTxtPass = false;
+        state.isAlertTxt = true;
+      }
+      else if (payload == 2){
+        state.isAlertTxt = false;
+        state.isAlertTxtPass = true
+      }
+      else{
+        state.isAlertTxt = false;
+        state.isAlertTxtPass = false;
+      }
+    },
     chgLoginStatus(state, payload){
       if (payload){
         state.user = window.localStorage.getItem('name');
@@ -27,15 +47,15 @@ export const store = new Vuex.Store({
       state.isLogin = payload;
     },
     saveMemberData(state){
-      Vue.axios.post('/getData', {token: window.localStorage.getItem('token')}).then((result) => {
-        console.log(result);
+      Vue.axios.post('/getMember', {token: window.localStorage.getItem('token')}).then((result) => {
+        //console.log(result);
         state.user = result.data[0].name;
         state.account = result.data[0].account;
         state.memberID = result.data[0].memberID;
         state.phone = result.data[0].phone;
         state.email = result.data[0].email;
       }).catch((err) => {
-        this.$swal('錯誤', "有資料發生錯誤", 'error');
+        this.$swal('錯誤', "您沒有登入", 'error');
       })
     }
   },
